@@ -1,4 +1,4 @@
-# 1 ESP32: Arhitektura in strojna oprema ESP32
+# ESP32: Arhitektura in strojna oprema ESP32
 
 ## 1.1 Strojna oprema (Hardware)
 
@@ -341,3 +341,7 @@ upload_speed = 921600
 ```
 
 ![Platformio_projekt_4](Slike/Poglavje4/Platformio_projekt_4.png)
+
+
+
+<iframe src="https://withdiode.com/embed/16da7aba-a027-487e-b6e2-7a39b55cb888" style="width:100%; height:500px; border:1px solid rgba(0,0,0,0.1); border-radius: 0.5rem; overflow:hidden;" title="Arduino Uno Blink" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" ></iframe>
