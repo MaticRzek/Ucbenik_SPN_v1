@@ -46,7 +46,7 @@ Ni vsak ESP32 enak. Razlikujejo se po številu jeder, moči in dodatkih.
 
 ![Slika 1 Primerjava esp32 različic](Slike/Poglavje1/PrimerjavaESP32.jpg)
 
-
+## 1.4 Načini programiranja ESP32
 
 
 # 2 Strojna arhitektura in električne specifikacije
@@ -356,7 +356,34 @@ V spodnji modri vrstici VS Code se nahajajo ključni gumbi za upravljanje:
 ![Platformio_projekt_4](Slike/Poglavje4/Platformio_projekt_4.png)
 
 
-# 5. Osnove programiranja: Sintaksa C++ v okolju Arduino
+# 5 Načini programiranja ESP32
+
+Prilagodljivost čipa ESP32 se kaže v podpori različnim programskim jezikom. Čeprav bomo v tem učbeniku uporabljali C++ znotraj ogrodja Arduino, je pomembno poznati tudi ostale možnosti, ki jih ponuja ekosistem Espressif.
+
+Izbira programskega jezika določa, kako učinkovito bo koda izrabila strojno opremo in kako hitro lahko razvijemo končni projekt.
+
+**Pregled podprtih programskih jezikov in ogrodij**
+
+| Parameter                | Arduino IDE                   | MicroPython                 | ESP-IDF                    |
+| ------------------------ | ----------------------------- | --------------------------- | -------------------------- |
+| **Programski jezik**     | C++                           | Python                      | C / C++                    |
+| **Podpora v IDE**        | Odlična (lasten IDE, VS Code) | Delna (Thonny, VS Code)     | Odlična (VS Code, Eclipse) |
+| **Podpora skupnosti**    | Izjemno visoka                | Zmerna                      | Visoka (profesionalna)     |
+| **Nizkonivojski dostop** | Omejen (preko knjižnic)       | Zelo omejen                 | Popoln (neposreden)        |
+| **Krivulja učenja**      | Položna (enostavno)           | Zelo položna (najlažje)     | Strma (zahtevno)           |
+| **Hitrost izvajanja**    | Visoka                        | Nizka (interpretiran jezik) | Najvišja (optimizirana)    |
+
+**Zakaj v učbeniku uporabljamo Arduino (C++)?**
+
+Čeprav ESP-IDF ponuja večjo učinkovitost, se bomo v nadaljevanju osredotočili na **Arduino framework**, saj:
+
+1. Poenostavi strojno plast: Ukazi, kot je 'digitalWrite()', so enaki za vse tipe ESP32 ploščic.
+
+2. Skupnost: Večina odprtokodnih projektov in rešitev za IoT uporablja to ogrodje.
+
+3. Učenje: C++ je temelji jezik v elektrotehniki in računalništvu, kar ti daje odlično podlago za nadaljnji študij.
+
+# 5.1 Osnove programiranja: Sintaksa C++ v okolju Arduino
 
 **5.1 Osnovna struktura programa**
 
@@ -442,6 +469,15 @@ Spremenljivka je prostor v pomnilniku (RAM), kamor shranimo podatek. V jeziku C+
 | bool   | Logična vrednost (DA/NE)      | bool luc_prižgana = true;           | 1 bajt                 |
 | char   | En sam znak                   | char oznaka = 'A';                  | 1 bajt                 |
 | String | Niz znakov (besedilo)         | String sporocilo = "Napaka!";       | Dinamična              |
+
+Podrobnejši opis podatkovnih tipov je na voljo v uradni dokumentaciji:
+
+- [int](https://docs.arduino.cc/language-reference/en/variables/data-types/int/)
+- [float](https://docs.arduino.cc/language-reference/en/variables/data-types/float/)
+- [bool](https://docs.arduino.cc/language-reference/en/variables/data-types/bool/)
+- [byte](https://docs.arduino.cc/language-reference/en/variables/data-types/byte/)
+- [String()](https://docs.arduino.cc/language-reference/en/variables/data-types/stringObject/)
+
 
 # 5.4 Aritmetični operatorji
 
@@ -666,6 +702,7 @@ novo_stanje = !stanje_led;
 ```
 **Praktični primer v kodi**
 
+```c++ 
 // Definiramo prag temperature
 float meja_temp = 30.0;
 float trenutna_temp = 32.5;
@@ -674,10 +711,12 @@ float trenutna_temp = 32.5;
 bool je_prevroce = trenutna_temp > meja_temp; 
 
 // Rezultat 'je_prevroce' bo true.
+```
 
-<blockquote>
- **Vprašanja za razumevanje:**<br>
-- 1. Kakšna bo vrednost spremenljivke rezultat, če izvedemo: bool rezultat = (10 > 5) && (3 == 4);?<br>
-- 2. Zakaj v programiranju ne moremo uporabiti le enega enačaja (=) za preverjanje enakosti?<br>
-- 3. Kako bi z operatorjem ! spremenili vrednost spremenljivke vklopljeno iz true v false?
-</blockquote>
+
+> **Vprašanja za razumevanje:**<br>
+> - 1. Kakšna bo vrednost spremenljivke rezultat, če izvedemo: bool rezultat = (10 > 5) && (3 == 4);?<br>
+> - 2. Zakaj v programiranju ne moremo uporabiti le >enega enačaja (=) za preverjanje enakosti?<br>
+> - 3. Kako bi z operatorjem ! spremenili vrednost spremenljivke vklopljeno iz true v false?
+
+
