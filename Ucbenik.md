@@ -358,7 +358,7 @@ V spodnji modri vrstici VS Code se nahajajo ključni gumbi za upravljanje:
 
 # 5. Osnove programiranja: Sintaksa C++ v okolju Arduino
 
-## 5.1 Osnovna struktura programa
+**5.1 Osnovna struktura programa**
 
 Vsak program (v Arduinu mu pravimo sketch) mora vsebovati dve glavni funkciji. Brez njiju se koda ne bo prevedla.
 
@@ -383,17 +383,212 @@ void loop() {
 >- Povezovanje na Wi-Fi omrežje.
 >- Inicializacijo senzorjev in zaslonov.
 
->Funkcija loop() – Srce programa
+>**Funkcija loop()** – Srce programa
 >Ko se setup() zaključi, procesor takoj vstopi v funkcijo loop(). Ko pride do zadnje vrstice v tej funkciji, ne neha delovati, ampak se takoj vrne na začetek te iste funkcije. To se ponavlja več tisočkrat v sekundi.
 >V loop() običajno zapišemo:
 >- Matematične izračune.
 >- Vklapljanje in izklapljanje aktuatorjev (LED, motorji, releji).
 >- Preverjanje spletnih zahtev.
 
-
-**Komentarji – Dokumentiranje kode**
-
->Komentarji so besedila, ki jih prevajalnik popolnoma prezre. Namenjeni so programerju, da razume, kaj določen del kode počne. Brez komentarjev je koda v profesionalnem okolju neuporabna. <br><br>
+>**Komentarji** so besedila, ki jih prevajalnik popolnoma prezre. Namenjeni so programerju, da razume, kaj določen del kode počne. Brez komentarjev je koda v profesionalnem okolju neuporabna. <br><br>
 >V C++ poznamo dva načina komentiranja:
 > - Enovrstični komentar: <br> Začne se z dvema poševnicama //. Vse, kar sledi do konca vrstice, je komentar.
 > - Večvrstični komentar: <br> Začne se z /* in konča z */. Uporaben za daljša pojasnila ali začasno izključitev večjega dela kode.
+
+**Analiza primera s komentarji**
+
+```c++
+#include <Arduino.h> // Obvezno v PlatformIO, v Arduino IDE ni potrebno
+
+/* Projekt: Osnovni utrip (Blink)
+   Avtor: i-Učbenik ESP32
+   Opis: Program vklopi in izklopi vgrajeno LED diodo.
+*/
+
+void setup() {
+  // Nastavimo GPIO pin 2 kot izhod (na tem pinu je na večini ploščic modra LED)
+  pinMode(2, OUTPUT); 
+  
+  Serial.begin(115200); // Zagon serijskega terminala za izpis stanja
+  Serial.println("Sistem se zagonja..."); // Izpis sporočila ob vklopu
+}
+
+void loop() {
+  digitalWrite(2, HIGH); // Nastavi napetost na pinu 2 na 3.3V (LED zasveti)
+  Serial.println("LED vklopljena");
+  
+  delay(1000);           // Premor za 1000 milisekund (1 sekunda)
+  
+  digitalWrite(2, LOW);  // Nastavi napetost na 0V (LED ugasne)
+  Serial.println("LED izklopljena");
+  
+  delay(1000);           // Ponovni premor
+  
+  // Ko pridemo sem, se procesor vrne na začetek funkcije loop()
+}
+```
+
+>**Zakaj je to pomembno?****<br>
+Če bi kodo za utripanje napisali v 'setup()', bi lučka zasvetila in ugasnila samo enkrat, nato pa bi ESP32 miroval. Ker je koda v 'loop()', dobimo neprestano utripanje, ki je osnova za delovanje vseh avtomatiziranih sistemov.
+
+# 5.2 Spremenljivke in podatkovni tipi
+
+Spremenljivka je prostor v pomnilniku (RAM), kamor shranimo podatek. V jeziku C++ moramo obvezno določiti, kakšen tip podatka bomo shranili, da procesor ve, koliko prostora mora rezervirati.
+
+| Tip    | Opis                          | Primer                              | Velikost v pomnilniku |
+|--------|-------------------------------|-------------------------------------|------------------------|
+| int    | Cela števila (brez vejice)    | int temperatura = 25;               | 4 bajti (na ESP32)     |
+| float  | Števila z decimalkami         | float napetost = 3.32;              | 4 bajti                |
+| bool   | Logična vrednost (DA/NE)      | bool luc_prižgana = true;           | 1 bajt                 |
+| char   | En sam znak                   | char oznaka = 'A';                  | 1 bajt                 |
+| String | Niz znakov (besedilo)         | String sporocilo = "Napaka!";       | Dinamična              |
+
+# 5.4 Aritmetični operatorji
+
+Za obdelavo podatkov uporabljamo standardne matematične znake:
+
+- `+` (seštevanje)  
+- `-` (odštevanje)  
+- `*` (množenje)  
+- `/` (deljenje)  
+- `%` (modulo – ostanek pri deljenju, npr. `7 % 3` je `1`)
+
+
+>**Vaja za razmišljanje:**<br>
+Če imamo spremenljivko 'int x = 7;' in 'int y = 2;', kaj bo rezultat operacije 'float z = x / y;'?
+Namig: Ker sta x in y celi števili (int), bo rezultat deljenja najprej celo število, šele nato se bo pretvorilo v float.
+
+**Podrobna analiza primera: Seštevanje podatkov**
+
+```c++ 
+#include <Arduino.h>
+
+void setup() {
+  // Odpremo komunikacijski kanal med ESP32 in računalnikom
+  Serial.begin(115200); 
+
+  // Deklaracija in inicializacija spremenljivk
+  int jabolka = 5;
+  int hruske = 10;
+  int sadje_skupaj; // Rezerviramo prostor, vrednosti še ni
+
+  // Operacija seštevanja
+  sadje_skupaj = jabolka + hruske;
+
+  // Izpis rezultata na zaslon računalnika
+  Serial.print("Skupno število sadežev: ");
+  Serial.println(sadje_skupaj);
+}
+
+void loop() {
+  // Prazna zanka - program je končal svoje delo v setupu
+}
+```
+
+ **Analiza kode:**<br>
+```c++ 
+Serial.begin(115200);
+```
+Ta ukaz "zbudi" serijski vmesnik. Številka 115200 je hitrost (baud rate). Če v Monitorju v VS Code / Arduino IDE nastavite drugačno hitrost, boste namesto besedila videli čudne znake.
+
+```c++ 
+int sadje_skupaj;
+```
+Tukaj smo ustvarili spremenljivko, vendar ji nismo pripisali vrednosti. V pomnilniku se na tem mestu trenutno nahaja naključna vrednost ("smeti"), dokler ne izvedemo računa.
+
+**Serial.print** izpiše besedilo v isti vrstici, 
+**Serial.println** pa po izpisu skoči v novo vrstico.
+
+## 5.4.1 **Praktični primeri računanja**
+
+V jeziku C++ operacije izvajamo s pomočjo operatorjev. Rezultat operacije običajno shranimo v novo spremenljivko ali pa z njim posodobimo obstoječo.
+
+- 1. **Seštevanje in odštevanje (Senzorski zamik)**
+
+Uporabljamo ju za umerjanje (kalibracijo) senzorjev. Če vemo, da naš senzor temperature vedno kaže 2 stopinji preveč, vrednost popravimo:
+
+```c++ 
+float surova_temp = 24.5;
+float popravljena_temp;
+
+// Odštejemo offset (zamik)
+popravljena_temp = surova_temp - 2.0; 
+
+// Rezultat v popravljena_temp bo 22.5
+```
+
+- 2. **Množenje (Pretvorba enot)**
+Uporabno pri pretvorbi napetosti iz ADC (Analogno-digitalnega pretvornika) v realne fizikalne enote.
+
+```c++ 
+int adc_vrednost = 2048;
+float faktor = 0.0008; // Primer faktorja za pretvorbo v Volte
+float napetost;
+
+napetost = adc_vrednost * faktor;
+
+// Rezultat v napetost bo 1.6384 V
+```
+
+- 3. **Deljenje in težava s celimi števili**
+
+>**Pozor**: Če delite dve celi števili (int), bo rezultat vedno celo število, ostanek pa se zavrže.
+
+```c++ 
+int x = 5;
+int y = 2;
+float rezultat;
+
+rezultat = x / y; 
+// Rezultat bo 2.0 in NE 2.5! Ker sta x in y 'int', se izvede celoštevilsko deljenje.
+
+rezultat = (float)x / y; 
+// Rezultat bo 2.5. Z (float) smo procesorju ukazali, naj x obravnava kot decimalno število.
+```
+
+- 4. **Modulo % (Ostanek pri deljenju)**
+
+To je eden najuporabnejših operatorjev pri programiranju mikrokrmilnikov. Vrne ostanek, ki ostane po celoštevilskem deljenju.
+
+```c++ 
+int sekunde = 125;
+int preostale_sekunde;
+
+preostale_sekunde = sekunde % 60;
+
+// 125 / 60 je 2, ostanek je 5.
+// Rezultat v preostale_sekunde bo 5.
+```
+
+>Uporaba: Modulo pogosto uporabljamo za ustvarjanje ciklov (npr. da se nekaj zgodi vsakih N ponovitev zanke).
+
+- 5. Kombinirani operatorji (Inkrement in dekrement)
+
+```c++ 
+int stevec = 0;
+
+stevec = stevec + 1; // Daljši zapis
+stevec += 1;         // Krajši zapis
+stevec++;            // Najpogostejši zapis (poveča za 1)
+
+stevec--;            // Zmanjša vrednost za 1
+```
+
+**Analiza prednosti operacij**
+C++ upošteva matematična pravila prednosti (množenje in deljenje imata prednost pred seštevanjem). Če želimo spremeniti vrstni red, uporabimo oklepaje:
+
+```c++
+float a = 2.0;
+float b = 3.0;
+float c = 4.0;
+float rezultat;
+
+rezultat = a + b * c;   // Rezultat: 14.0 (3 * 4 + 2)
+rezultat = (a + b) * c; // Rezultat: 20.0 ((2 + 3) * 4)
+```
+**Vprašanja za vajo:**
+- 1. Imamo 'int tocke = 10';. Kakšna bo vrednost po ukazu 'tocke *= 2;'?
+
+- 2. Zakaj je operacija '10 / 3' v C++ enaka '3' in ne '3.33'?
+
+- 3. Kako bi z operatorjem % ugotovili, ali je število sodo ali liho?
