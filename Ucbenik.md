@@ -145,7 +145,7 @@ Ker notranji pomnilnik pogosto ne zadostuje za kompleksne aplikacije, ESP32 upor
 - **Non-volatile** (podatki ostanejo brez napajanja).
 - Procesor uporablja **cache (predpomnilnik)** za hitrejši dostop.
 
-#### External PSRAM (Pseudo-Static RAM)
+### External PSRAM (Pseudo-Static RAM)
 
 - Prisoten pri nekaterih modulih (npr. WROVER).
 - Uporaba:
@@ -154,7 +154,7 @@ Ker notranji pomnilnik pogosto ne zadostuje za kompleksne aplikacije, ESP32 upor
   - zahtevni strežniki
 - Razširi omejen notranji SRAM.
 
-#### eFuse (Electronic Fuses)
+### eFuse (Electronic Fuses)
 
 - Enosmerno zapisljiv pomnilnik.
 - Uporablja se za:
@@ -166,7 +166,7 @@ Ker notranji pomnilnik pogosto ne zadostuje za kompleksne aplikacije, ESP32 upor
 
 ---
 
-### 3.3.3 Virtualni naslovni prostor in MMU
+## 3.3.3 Virtualni naslovni prostor in MMU
 
 ESP32 uporablja **MMU (Memory Management Unit)** za preslikavo zunanjega pomnilnika v naslovni prostor procesorja.
 
@@ -186,7 +186,7 @@ Zunanji Flash pomnilnik ESP32 je razdeljen na več particij. Ena particija je na
 
 ---
 
-### 3.1 SPIFFS (SPI Flash File System)
+## 3.1 SPIFFS (SPI Flash File System)
 
 SPIFFS je bil dolga leta standard za ESP8266 in ESP32.
 
@@ -199,7 +199,7 @@ SPIFFS je bil dolga leta standard za ESP8266 in ESP32.
 
 ---
 
-### 3.2 LittleFS (LITTLE File System)
+## 3.2 LittleFS (LITTLE File System)
 
 LittleFS je sodobnejši in robustnejši datotečni sistem, trenutno priporočljiv za nove projekte na ESP32.
 
@@ -340,8 +340,38 @@ upload_speed = 921600
 
 ```
 
+- **monitor_speed**: Določa hitrost osveževanja serijskega terminala (v bitih na sekundo - baud).
+
+- **upload_speed**: Določa hitrost prenašanja binarne datoteke na ESP32 (višja vrednost skrajša čas čakanja).
+
+**Preverjanje namestitve (Build & Upload)**
+V spodnji modri vrstici VS Code se nahajajo ključni gumbi za upravljanje:
+
+- **Kljukica (Build):** Preveri kodo glede sintaktičnih napak.
+
+- **Puščica desno (Upload):** Prenese program na ploščico.
+
+- **Vtič (Serial Monitor):** Odpre okno za spremljanje izpisa podatkov iz ESP32.
+
 ![Platformio_projekt_4](Slike/Poglavje4/Platformio_projekt_4.png)
 
 
+# 5. Osnove programiranja: Sintaksa C++ v okolju Arduino
 
-<iframe src="https://withdiode.com/embed/16da7aba-a027-487e-b6e2-7a39b55cb888" style="width:100%; height:500px; border:1px solid rgba(0,0,0,0.1); border-radius: 0.5rem; overflow:hidden;" title="Arduino Uno Blink" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts" ></iframe>
+## 5.1 Osnovna struktura programa
+
+Vsak program (v Arduinu mu pravimo sketch) mora vsebovati dve glavni funkciji. Brez njiju se koda ne bo prevedla.
+
+```cpp
+#include <Arduino.h> // Obvezno v PlatformIO, v Arduino IDE ni potrebno
+
+// 1. Funkcija setup se izvede samo enkrat ob vklopu naprave
+void setup() {
+  // Tukaj nastavimo osnovne parametre (npr. hitrost komunikacije)
+}
+
+// 2. Funkcija loop se izvaja v neskončni zanki, dokler ima naprava napajanje
+void loop() {
+  // Tukaj pišemo glavno logiko (npr. branje senzorjev)
+}
+```
