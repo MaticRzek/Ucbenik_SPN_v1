@@ -362,7 +362,7 @@ V spodnji modri vrstici VS Code se nahajajo ključni gumbi za upravljanje:
 
 Vsak program (v Arduinu mu pravimo sketch) mora vsebovati dve glavni funkciji. Brez njiju se koda ne bo prevedla.
 
-```cpp
+```c++
 #include <Arduino.h> // Obvezno v PlatformIO, v Arduino IDE ni potrebno
 
 // 1. Funkcija setup se izvede samo enkrat ob vklopu naprave
@@ -375,3 +375,25 @@ void loop() {
   // Tukaj pišemo glavno logiko (npr. branje senzorjev)
 }
 ```
+
+> **Funkcija setup()** se pokliče **le enkrat**, takoj ko mikrokrmilnik dobi napetost ali ko pritisnemo gumb Reset. Njen namen je konfiguracija okolja.
+>V **setup()** običajno zapišemo:
+>- Določitev smeri pinov (pinMode – ali bo pin vhod ali izhod).
+>- Zagon serijske komunikacije (Serial.begin).
+>- Povezovanje na Wi-Fi omrežje.
+>- Inicializacijo senzorjev in zaslonov.
+
+>Funkcija loop() – Srce programa
+>Ko se setup() zaključi, procesor takoj vstopi v funkcijo loop(). Ko pride do zadnje vrstice v tej funkciji, ne neha delovati, ampak se takoj vrne na začetek te iste funkcije. To se ponavlja več tisočkrat v sekundi.
+>V loop() običajno zapišemo:
+>- Matematične izračune.
+>- Vklapljanje in izklapljanje aktuatorjev (LED, motorji, releji).
+>- Preverjanje spletnih zahtev.
+
+
+**Komentarji – Dokumentiranje kode**
+
+>Komentarji so besedila, ki jih prevajalnik popolnoma prezre. Namenjeni so programerju, da razume, kaj določen del kode počne. Brez komentarjev je koda v profesionalnem okolju neuporabna. <br><br>
+>V C++ poznamo dva načina komentiranja:
+> - Enovrstični komentar: <br> Začne se z dvema poševnicama //. Vse, kar sledi do konca vrstice, je komentar.
+> - Večvrstični komentar: <br> Začne se z /* in konča z */. Uporaben za daljša pojasnila ali začasno izključitev večjega dela kode.
