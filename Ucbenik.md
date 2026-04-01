@@ -592,3 +592,92 @@ rezultat = (a + b) * c; // Rezultat: 20.0 ((2 + 3) * 4)
 - 2. Zakaj je operacija '10 / 3' v C++ enaka '3' in ne '3.33'?
 
 - 3. Kako bi z operatorjem % ugotovili, ali je število sodo ali liho?
+
+
+# 5.5 Logični tip podatkov (bool) in primerjalni operatorji
+
+Spremenljivka tipa 'bool' (skrajšano za boolean) lahko hrani le dve vrednosti:
+
+- 'true' (resnično / logična 1 / visoko stanje)
+
+- false (neresnično / logična 0 / nizko stanje)
+
+V pomnilniku ESP32 'bool' zavzame 1 bajt. Čeprav bi teoretično potrebovali le 1 bit, procesorji lažje upravljajo s celimi bajti (8 bit).
+
+**Primerjalni operatorji (Ustvarjanje pogojev)**
+
+Da dobimo logično vrednost ('true' ali 'false'), moramo podatke med seboj primerjati. Rezultat vsake spodnje operacije je tipa 'bool'.
+
+| Operator | Opis                  | Primer     | Rezultat |
+|----------|-----------------------|------------|----------|
+| ==       | Je enako?             | 5 == 5     | true     |
+| !=       | Ni enako?             | 5 != 3     | true     |
+| >        | Večje kot?            | 10 > 20    | false    |
+| <        | Manjše kot?           | 2 < 8      | true     |
+| >=       | Večje ali enako?      | 5 >= 5     | true     |
+| <=       | Manjše ali enako?     | 4 <= 3     | false    |
+
+
+
+> **Pozor**: Začetniki pogosto zamenjajo = in ==.
+>- 'a = 5;' pomeni: "V spremenljivko a shrani vrednost 5." (Prireditveni operator)
+>- 'a == 5;' pomeni: "Preveri, ali je v a vrednost 5." (Primerjalni operator)
+
+**Logični operatorji (Združevanje pogojev)**
+
+Včasih moramo preveriti več stvari hkrati (npr. "Če je pritisnjena tipka **IN** je hkrati temperatura previsoka"). Za to uporabljamo logična vrata:
+
+1. **Logični IN (operator '&&')**
+
+Rezultat je 'true' le, če sta **oba** pogoja resnična.
+
+```c++ 
+bool tipka_pritisnjena = true;
+bool alarm_aktiven = false;
+bool rezultat;
+
+rezultat = tipka_pritisnjena && alarm_aktiven; 
+// Rezultat bo 'false', ker alarm ni aktiven.
+```
+
+2. **Logični ALI (operator '||')**
+
+Rezultat je 'true', če je **vsaj eden** od pogojev resničen.
+
+```c++ 
+bool senzor_1 = true;
+bool senzor_2 = false;
+bool vklop_luci;
+
+vklop_luci = senzor_1 || senzor_2;
+// Rezultat bo 'true', ker je senzor_1 zaznal gibanje.
+``` 
+
+3. **Logični NE / Negacija (operator '!')**
+
+Obrne vrednost: 'true' postane 'false' in obratno.
+
+```c++ 
+bool stanje_led = true;
+bool novo_stanje;
+
+novo_stanje = !stanje_led;
+// Rezultat bo 'false'.
+```
+**Praktični primer v kodi**
+
+// Definiramo prag temperature
+float meja_temp = 30.0;
+float trenutna_temp = 32.5;
+
+// Preverimo stanje (ali je prevroče?)
+bool je_prevroce = trenutna_temp > meja_temp; 
+
+// Rezultat 'je_prevroce' bo true.
+
+<blockquote>
+ **Vprašanja za razumevanje:**<br>
+- 1. Kakšna bo vrednost spremenljivke rezultat, če izvedemo: bool rezultat = (10 > 5) && (3 == 4);?<br>
+- 2. Zakaj v programiranju ne moremo uporabiti le enega enačaja (=) za preverjanje enakosti?<br>
+- 3. Kako bi z operatorjem ! spremenili vrednost spremenljivke vklopljeno iz true v false?
+</blockquote>
